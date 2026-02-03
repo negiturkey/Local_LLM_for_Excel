@@ -3,6 +3,8 @@
 **An Excel Add-in that automates tasks using Local LLMs (Ollama / LM Studio) or Google Gemini API.**
 It runs on a lightweight Python server and requires no complex environment setup.
 
+![Local LLM for Excel](top_image.png)
+
 ---
 
 ## 🌟 Key Features
@@ -135,6 +137,8 @@ Local_LLM_for_Excel/
 
 **ローカルLLM (Ollama / LM Studio) や Google Gemini API を活用して、Excel作業を自動化するアドインです。**
 Pythonの超軽量サーバーのみで動作し、複雑な環境構築は不要です。
+
+![Local LLM for Excel](top_image.png)
 
 ---
 
