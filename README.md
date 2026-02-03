@@ -26,33 +26,34 @@ It runs on a lightweight Python server and requires no complex environment setup
   - Ensure **"Add Python to PATH"** is checked during installation.
 - **Git (Optional)**: [Download](https://git-scm.com/) (Required only for cloning).
 - **Microsoft Account**: You must be signed in to Excel.
-- **Privacy Settings**: "Optional connected experiences" must be enabled (File > Options > Trust Center > Trust Center Settings > Privacy Options).
+- **Privacy Settings**: To use add-ins in Excel, you must enable **"Optional connected experiences"** after signing in (File > Options > Trust Center > Trust Center Settings > Privacy Options).
 
 ### 1. Server Preparation
 1. **Clone or Download**:
    If you have Git, run:
    ```powershell
    git clone https://github.com/negiturkey/Local_LLM_for_Excel.git
+   cd Local_LLM_for_Excel
    ```
    Or download the ZIP and extract it.
 
 2. **Open Folder**: Right-click the `Local_LLM_for_Excel` folder and select "Open in Terminal".
 
-2. **Gemini Setup (Optional)**:
-   If using Google Gemini, create a `.env` file in this folder and save your API Key:
-   ```ini
-   GEMINI_API_KEY=ABCDE...
-   ```
-   *Create with Notepad and save as `.env` (no extension).*
+    To use the Google Gemini API persistently, create a `.env` file in this folder and save your API Key:
+    ```ini
+    GEMINI_API_KEY=ABCDE...
+    ```
+    *Create with Notepad and save as `.env` (no extension). API keys entered via the GUI are temporary and not saved.*
 
 3. **Start Local HTTP Server**:
    ```powershell
    python server/host.py
    ```
-   → Setup is complete when `HTTP Server: http://localhost:3000/src/index.html` appears. **Keep this command prompt window open.**
+   → Setup is complete when `HTTP Server: http://localhost:3000/` appears. **Keep this command prompt window open.**
+   *Excel side panel source: `http://localhost:3000/src/index.html`*
 
 ### 2. Register to Excel (First Time Only)
-To make Excel recognize this add-in, register this folder as a "Trusted Catalog".
+To make Excel recognize the shared folder address as an add-in, register this folder as a "Trusted Catalog".
 
 1. **Prepare Shared Folder**:
    - Right-click `Local_LLM_for_Excel` folder → **Properties** → **Sharing** tab.
@@ -66,9 +67,8 @@ To make Excel recognize this add-in, register this folder as a "Trusted Catalog"
    - Check **"Show in Menu"** for the added line and click OK.
    - **Restart Excel.**
 
-3. **Insert Add-in**:
-   - After restart, go to **Search** tab → **Insert Add-in** (or Get Add-ins → Shared Folder).
-   - Select "Local LLM for Excel" from the **Shared Folder** tab and add it.
+    - After restart, go to **Insert** tab → **Add-ins** (or Get Add-ins).
+    - Select "Local LLM for Excel" from the **Shared Folder** tab and add it.
 
 ---
 
@@ -163,33 +163,37 @@ Pythonの超軽量サーバーのみで動作し、複雑な環境構築は不�
   - インストール時に **「Add Python to PATH」** にチェックを入れてください。
 - **Git (任意)**: [ダウンロード](https://git-scm.com/) (クローンする場合のみ必要)。
 - **Microsoft アカウント**: Excelでサインインしている必要があります。
-- **プライバシー設定**: 「オプションの接続エクスペリエンス」を有効にする必要があります（ファイル > オプション > トラストセンター > トラストセンターの設定 > プライバシーオプション）。
+- **プライバシー設定**: Excelでアドオンを利用するには、サインインした後に「オプションの接続エクスペリエンス」を有効にする必要があります（ファイル > オプション > トラストセンター > トラストセンターの設定 > プライバシーオプション）。
 
 ### 1. サーバーの準備
 1. **クローンまたはダウンロード**:
    Gitを使用する場合、以下を実行：
    ```powershell
    git clone https://github.com/negiturkey/Local_LLM_for_Excel.git
+   cd Local_LLM_for_Excel
    ```
    または、GitHubからZIPファイルをダウンロードして展開してください。
 
 2. **フォルダを開く**: `Local_LLM_for_Excel` フォルダを右クリックして「ターミナルで開く」を選択。
 
 2. **Gemini設定 (任意)**:
-   Google Gemini を使用する場合は、このフォルダ直下に `.env` ファイルを作成し、APIキーを保存してください。
+   継続的にGoogle Gemini APKを使用する場合は、このフォルダ直下に `.env` ファイルを作成し、APIキーを保存してください。
    ```ini
    GEMINI_API_KEY=ABCDE...
    ```
    ※ メモ帳で作成し、ファイル名を `.env` （拡張子なし）として保存します。
+   ※ GUI上から入力するAPIキーは保存されず、一時的なものとなります。
 
 3. **ローカルHTTPサーバー起動**:
    ```powershell
    python server/host.py
    ```
-   → `HTTP Server: http://localhost:3000/src/index.html` と表示されれば準備完了です。このコマンドプロンプト画面はバックグラウンド処理のために**閉じずに**そのまま起動させておきます。
+   → `HTTP Server: http://localhost:3000/` と表示されれば準備完了です。このコマンドプロンプト画面はバックグラウンド処理のために**閉じずに**そのまま起動させておきます。
+   ※ Excelで表示される画面ソース
+   `http://localhost:3000/src/index.html` 
 
 ### 2. Excelへの登録 (初回のみ)
-Excelにこのアドインを認識させるため、このフォルダを「信頼できるカタログ」として登録します。
+Excelに共有フォルダのアドレスをアドインとして認識させるため、このフォルダを「信頼できるカタログ」として登録します。
 
 1. **共有フォルダの準備**:
    - `Local_LLM_for_Excel` フォルダを右クリック → **プロパティ** → **共有**タブ。
@@ -204,7 +208,7 @@ Excelにこのアドインを認識させるため、このフォルダを「信
    - **Excelを一度再起動してください。**
 
 3. **アドインの挿入**:
-   - 再起動後、**検索**タブ → **アドインの挿入** (またはアドインを入手 → 共有フォルダー)。
+   - 再起動後、**検索**タブ → **アドインの挿入** (またはアドイン) → **共有フォルダー**のマニフェストファイルを追加します。
    - **共有フォルダー** タブに「Local LLM for Excel」が表示されるので選択して追加します。
 
 ---
