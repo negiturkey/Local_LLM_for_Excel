@@ -25,6 +25,8 @@ It runs on a lightweight Python server and requires no complex environment setup
 - **Python (3.10+)**: [Download](https://www.python.org/)
   - Ensure **"Add Python to PATH"** is checked during installation.
 - **Git (Optional)**: [Download](https://git-scm.com/) (Required only for cloning).
+- **Microsoft Account**: You must be signed in to Excel.
+- **Privacy Settings**: "Optional connected experiences" must be enabled (File > Options > Trust Center > Trust Center Settings > Privacy Options).
 
 ### 1. Server Preparation
 1. **Clone or Download**:
@@ -160,6 +162,8 @@ Pythonの超軽量サーバーのみで動作し、複雑な環境構築は不�
 - **Python (3.10以上)**: [ダウンロード](https://www.python.org/)
   - インストール時に **「Add Python to PATH」** にチェックを入れてください。
 - **Git (任意)**: [ダウンロード](https://git-scm.com/) (クローンする場合のみ必要)。
+- **Microsoft アカウント**: Excelでサインインしている必要があります。
+- **プライバシー設定**: 「オプションの接続エクスペリエンス」を有効にする必要があります（ファイル > オプション > トラストセンター > トラストセンターの設定 > プライバシーオプション）。
 
 ### 1. サーバーの準備
 1. **クローンまたはダウンロード**:
