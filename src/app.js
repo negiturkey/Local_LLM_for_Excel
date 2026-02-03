@@ -1391,6 +1391,57 @@ async function handleSend() {
     }
 }
 
+// ===== LLM 共通呼び出し関数 (定義漏れ修正) =====
+async function callLLMBackend(provider, model, messages, signal = null) {
+    let body = {
+        model: model,
+        messages: messages,
+        stream: false,
+        options: { temperature: 0.1 }
+    };
+
+    if (provider === 'gemini') {
+        const apiKey = document.getElementById('api-key').value;
+        const systemMsg = messages.find(m => m.role === 'system');
+        const chatHistory = messages.filter(m => m.role !== 'system').map(m => ({
+            role: m.role === 'assistant' ? 'model' : 'user',
+            parts: [{ text: m.content }]
+        }));
+
+        const apiBody = {
+            contents: chatHistory,
+            generationConfig: { temperature: 0.1 }
+        };
+        if (systemMsg) apiBody.system_instruction = { parts: [{ text: systemMsg.content }] };
+
+        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(apiBody),
+            signal: signal
+        });
+
+        if (!res.ok) {
+            const errText = await res.text();
+            throw new Error(`Gemini API Error ${res.status}: ${errText}`);
+        }
+        const data = await res.json();
+        return data.candidates[0].content.parts[0].text;
+    } else {
+        const url = (provider === 'ollama') ? `${PROXY_BASE}/ollama/api/chat` : `${PROXY_BASE}/lmstudio/v1/chat/completions`;
+        const res = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body),
+            signal: signal
+        });
+
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        return (provider === 'ollama') ? data.message.content : data.choices[0].message.content;
+    }
+}
+
 // ===== エージェントループ =====
 async function runAgentLoop(provider, model, messages, base64Image) {
     let loopCount = 0;
@@ -1406,7 +1457,12 @@ async function runAgentLoop(provider, model, messages, base64Image) {
         if (!aiBubble) aiBubble = addMessage("ai", "🧠 Thinking...");
         else aiBubble.innerText = `🧠 Step ${loopCount}: Thinking...`;
 
-        let body = { model: model, messages: messages, options: { temperature: 0.1 } };
+        let body = {
+            model: model,
+            messages: messages,
+            stream: false, // Ensure no streaming for simple JSON parsing
+            options: { temperature: 0.1 }
+        };
 
         if (base64Image && loopCount === 1) {
             const userMsg = messages[messages.length - 1];
@@ -1672,8 +1728,15 @@ async function loadModel() {
 
     try {
         const endpoint = provider === 'ollama' ? "/api/generate" : "/v1/chat/completions";
-        const body = provider === 'ollama' ? { model, keep_alive: "1h" } : { model, messages: [{ role: "user", content: "hi" }], max_tokens: 1 };
-        await fetch(`${PROXY_BASE}/${provider}${endpoint}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+        const body = (provider === 'ollama')
+            ? { model, keep_alive: "1h", stream: false }
+            : { model, messages: [{ role: "user", content: "hi" }], max_tokens: 1, stream: false };
+
+        await fetch(`${PROXY_BASE}/${provider}${endpoint}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
+        });
         log("✓ Ready.");
     } catch (e) { log("✗ Failed."); } finally { setLoadingState(false, "ロード"); }
 }
