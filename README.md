@@ -26,7 +26,7 @@ It runs on a lightweight Python server and requires no complex environment setup
   - Ensure **"Add Python to PATH"** is checked during installation.
 - **Git (Optional)**: [Download](https://git-scm.com/) (Required only for cloning).
 - **Microsoft Account**: You must be signed in to Excel.
-- **Privacy Settings**: To use add-ins in Excel, you must enable **"Optional connected experiences"** after signing in (File > Options > Trust Center > Trust Center Settings > Privacy Options).
+- **Privacy Settings**: To use add-ins in Excel, you must enable **"Optional connected experiences"** after signing in (File > Account > Account Privacy: Manage Settings > Privacy Settings > All connected experiences > Check: Turn on all connected experiences).
 
 ### 1. Server Preparation
 1. **Clone or Download**:
@@ -53,21 +53,21 @@ It runs on a lightweight Python server and requires no complex environment setup
    *Excel side panel source: `http://localhost:3000/src/index.html`*
 
 ### 2. Register to Excel (First Time Only)
-To make Excel recognize the shared folder address as an add-in, register this folder as a "Trusted Catalog".
+To make Excel recognize the shared folder address as a sideloaded add-in, register this folder as a "Trusted Catalog".
 
 1. **Prepare Shared Folder**:
-   - Right-click `Local_LLM_for_Excel` folder → **Properties** → **Sharing** tab.
-   - Click **Share...**, add yourself, and click "Share".
-   - Copy the displayed "Network Path" (e.g., `\\Hostname\Local_LLM_for_Excel`).
+    - Right-click `Local_LLM_for_Excel` folder → **Properties** → **Sharing** tab.
+    - Click **Share...**, add yourself, and click "Share".
+    - Copy the displayed "Network Path" (e.g., `\\ComputerName\Local_LLM_for_Excel`).
 
-2. **Configure in Excel**:
-   - Open Excel → **File** → **Options** → **Trust Center** → **Trust Center Settings**.
-   - Select **Trusted Add-in Catalogs** on the left menu.
-   - Paste the copied path into "Catalog URL" and click **"Add Catalog"**.
-   - Check **"Show in Menu"** for the added line and click OK.
-   - **Restart Excel.**
+2. **Configure Sideloaded Add-in in Excel**:
+    - Open Excel → **File** → **Options** → **Trust Center** → **Trust Center Settings**.
+    - Select **Trusted Add-in Catalogs** on the left menu.
+    - In the **Trusted Catalog Table**, paste the copied path into "Catalog URL" and click **"Add Catalog"**.
+    - Check **"Show in Menu"** for the added line and click OK.
+    - **Restart Excel.**
 
-    - After restart, go to **Insert** tab → **Add-ins** (or Get Add-ins).
+    - After restart, go to **Insert** tab → **Add-ins** (or Get Add-ins) → **Shared Folder** to add the manifest file.
     - Select "Local LLM for Excel" from the **Shared Folder** tab and add it.
 
 ---
@@ -163,7 +163,7 @@ Pythonの超軽量サーバーのみで動作し、複雑な環境構築は不�
   - インストール時に **「Add Python to PATH」** にチェックを入れてください。
 - **Git (任意)**: [ダウンロード](https://git-scm.com/) (クローンする場合のみ必要)。
 - **Microsoft アカウント**: Excelでサインインしている必要があります。
-- **プライバシー設定**: Excelでアドオンを利用するには、サインインした後に「オプションの接続エクスペリエンス」を有効にする必要があります（ファイル > オプション > トラストセンター > トラストセンターの設定 > プライバシーオプション）。
+- **プライバシー設定**: Excelでアドオンを利用するには、サインインした後に「オプションの接続エクスペリエンス」を有効にする必要があります（ファイル > アカウントのプライバシー：設定の管理 > プライバシー設定 > すべての接続エクスペリエンス > チェック：すべての接続エクスペリエンスをオンにする）。
 
 ### 1. サーバーの準備
 1. **クローンまたはダウンロード**:
@@ -188,22 +188,25 @@ Pythonの超軽量サーバーのみで動作し、複雑な環境構築は不�
    ```powershell
    python server/host.py
    ```
-   → `HTTP Server: http://localhost:3000/` と表示されれば準備完了です。このコマンドプロンプト画面はバックグラウンド処理のために**閉じずに**そのまま起動させておきます。
+   → `HTTP Server: http://localhost:3000/` と表示されれば準備完了です。
+   このコマンドプロンプト画面はバックグラウンド処理のために**閉じずに**そのまま起動させておきます。
    ※ Excelで表示される画面ソース
    `http://localhost:3000/src/index.html` 
 
 ### 2. Excelへの登録 (初回のみ)
-Excelに共有フォルダのアドレスをアドインとして認識させるため、このフォルダを「信頼できるカタログ」として登録します。
+Excelに共有フォルダのアドレスを持ち込みアドインとして認識させるため、このフォルダを「信頼できるカタログ」として登録します。
 
 1. **共有フォルダの準備**:
    - `Local_LLM_for_Excel` フォルダを右クリック → **プロパティ** → **共有**タブ。
    - **共有(S)...** をクリックし、自分自身を追加して「共有」ボタンを押します。
-   - 表示された「ネットワークパス（例: `\\Hostname\Local_LLM_for_Excel`）」をコピーします。
+   - 表示された「ネットワークパス（例: 
+   `\\パソコンの名前\Local_LLM_for_Excel`）」をコピーします。
 
-2. **Excelでの設定**:
+2. **Excelでの持ち込みアドイン設定**:
    - Excelを開き、**ファイル** → **オプション** → **トラストセンター** → **トラストセンターの設定**。
-   - 左側メニューの **信頼できるアドインカタログ** を選択。
-   - 「カタログのURL」にさきほどコピーしたパスを貼り付け、**「カタログの追加」** をクリック。
+   - 左側メニューの **信頼できるアドイン カタログ** を選択。
+   -  **信頼できるカタログのテーブル** にある「カタログの URL」にさきほどコピーしたパスを貼り付け、**「カタログの追加」** をクリック。
+   `\\パソコンの名前\Local_LLM_for_Excel`
    - 追加された行の **「メニューに表示する」** にチェックを入れて OK で閉じます。
    - **Excelを一度再起動してください。**
 
